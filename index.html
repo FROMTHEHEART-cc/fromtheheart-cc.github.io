@@ -1,26 +1,93 @@
 
 <!DOCTYPE html>
-<html class="wf-initial-load">
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOLARA | Record Label</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div id="content">
+            <div id="home-page">
+                <img src="solara.png" alt="SOLARA Logo" class="solara-logo">
+                <p class="subtitle">INDEPENDENT RECORD LABEL<br>BASED IN ANTWERP, BE</p>
+                <div class="links">
+                    <a class='link' href='/about' id='about-link'>ABOUT</a>
+                </div>
+                <div class="social">
+                    <a href="https://instagram.com/solararecords" class="social-link" target="_blank">
+                        <img src="https://static.wixstatic.com/media/01c3aff52f2a4dffa526d7a9843d46ea.png" alt="Instagram Logo">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 
-		
-			<title>Landing Page copy </title>
-			<script>window.__PRELOADED_STATE__={"structure":{"byParent":{"root":[]},"bySort":{},"indexById":{},"liveIndexes":{}},"site":{"id":2742901,"direct_link":"https://897744.cargo.site","display_url":"897744.cargo.site","favicon_url":"https://static.cargo.site/favicon/c3-favicon.ico","site_url":"897744","domain":null,"domain_active":false,"domain_pending":false,"website_title":"Landing Page copy ","has_site_description":false,"site_description":"cargo.site","is_template":false,"access_level":"private"},"pages":{"byId":{}},"sets":{"byId":{}},"media":{"data":[]},"css":{},"siteDesign":{"images":{},"quick_view":{},"site":{"enableColorFilter":false,"enableHomeLinkActiveStates":false},"cart":{"theme":"light"},"contact_form":{"theme":"light"}},"frontendState":{"hasSiteModel":true,"hasScaffolding":true,"hasSiteDesign":true,"hasSiteCSS":true,"hasShopModel":false,"hasSitePackage":true,"quickView":{"mode":"default","inited":false,"autoScrolling":false,"elementArray":false,"activeIndex":0,"startingIndex":0},"contactForm":{"transition":false,"inited":false},"adminMode":false,"inAdminFrame":false,"renderedPages":[],"networkErrors":[],"pageNotFound":false,"fontsLoaded":[],"deviceType":"mouse","hostname":"897744.cargo.site"},"commerce":{"products":{},"cart":{},"shop":{}}}</script>
-			<meta name="robots" content="noindex">
+    <script>
+       $(document).ready(function() {
+    function bindLinkClicks() {
+        $('a').on('click', function(e) {
+            const href = $(this).attr('href');
 
-		<link rel="stylesheet" type="text/css" href="https://build.cargo.site/frontend/a33e40/css/front-end/cargo-static.css">
-		<link rel="stylesheet" type="text/css" href="https://build.cargo.site/frontend/a33e40/index.css">
-		<script>!function(){function e(e,o,t){!1===e.prototype.hasOwnProperty(name)&&(e.prototype[o]=t)}e(Node,"saveable",!1),e(Node,"setSaveable",function(e){return this.saveable=e,this}),e(Node,"isSaveable",function(){return this.saveable}),Node.prototype.persistCloneNode=function(){var s=function(e,o,t){for(var i=0;i<e.childNodes.length;i++)t(e.childNodes[i],o.childNodes[i]),0<e.childNodes[i].childNodes.length&&s(e.childNodes[i],o.childNodes[i],t)},e=Node.prototype.cloneNode.apply(this,arguments);return this.isSaveable&&!0===this.isSaveable()&&e.setSaveable(!0),0<this.childNodes.length&&s(this,e,function(e,o){e.isSaveable&&!0===e.isSaveable()&&o.setSaveable(!0)}),e},this.core={markAsEditable:function(e){}}}(window.CargoEditor=window.CargoEditor||{});</script>
-	
-			<link rel="icon" href="https://static.cargo.site/favicon/c3-favicon.ico" sizes="any">
-			
-			
-			
-			</head>
-	<body style="opacity: 0;">
-		<script src="https://build.cargo.site/frontend/a33e40/index.js" async type="module"></script>
-	</body>
+            if (href.includes('about.html') || href.endsWith('/about')) {
+                e.preventDefault();
 
+                $('#content').fadeOut(500, function() {
+                    $.ajax({
+                        url: href,
+                        success: function(data) {
+                            const content = href.endsWith('/about') ? $('<div>').html(data).find('#about-page').html() : data;
+
+                            $('#content').html(content);
+                            history.pushState({html: content, pageTitle: document.title}, '', href);
+
+                            $('#content').fadeIn(500, function() {
+                                bindLinkClicks();  
+                            });
+                        }
+                    });
+                });
+            }
+        });
+    }
+
+    bindLinkClicks();  
+
+    window.onpopstate = function(event) {
+        if (event.state) {
+            $('#content').fadeOut(500, function() {
+                $('#content').html(event.state.html);
+                document.title = event.state.pageTitle;
+
+                $('#content').fadeIn(500, function() {
+                    bindLinkClicks(); 
+                });
+            });
+        } else {
+            
+            $('#content').fadeOut(500, function() {
+                
+                $.ajax({
+                    url: '/',
+                    success: function(data) {
+                        const homeContent = $('<div>').html(data).find('#home-page').html();
+                        $('#content').html(homeContent);
+
+                        $('#content').fadeIn(500, function() {
+                            bindLinkClicks();  
+                        });
+                    }
+                });
+            });
+        }
+    };
+});
+
+        </script>
+        
+        
+</body>
 </html>
